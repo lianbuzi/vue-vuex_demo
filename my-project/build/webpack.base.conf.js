@@ -4,6 +4,7 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 const ExtractPlugin = require('extract-text-webpack-plugin');
+const webpack= require('webpack');
 function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -101,11 +102,13 @@ module.exports = {
       }
     ]
   },
-  // plugins: [
-  //   new webpack.optimize.CommonsChunkPlugin('common.js'),
-  //   new webpack.ProvidePlugin({
-  //     jQuery: "jquery",
-  //     $: "jquery"
-  //   })
-  // ]
+  plugins: [
+    new webpack.optimize.CommonsChunkPlugin('common.js'),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+      'window.$': 'jquery'
+    })
+  ]
 };

@@ -16,7 +16,9 @@ module.exports = {
     'html'
   ],
   globals: {
-    "Swiper": true
+    "Swiper": true,
+    $:true,
+    jQuery:true
   }, //这个地方是新加入的  全局注入
   // add your custom rules here
   'rules': {
