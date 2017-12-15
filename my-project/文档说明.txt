@@ -1,0 +1,5 @@
+cmd 进入该项目根目录
+依次执行
+npm init
+npm install
+npm start
