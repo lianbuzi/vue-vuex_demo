@@ -20,22 +20,26 @@ class Slide {
 
     // 点击切换到下一张
     this.ele.find('section:nth-child(2)').on('click', function () {
-      this.stop()
+      this.stop();
       this.next()
       // this.play()
-    }.bind(this))
+    }.bind(this));
     // 点击切换到上一张
     this.ele.find('section:nth-child(1)').on('click', function () {
-      this.stop()
+      this.stop();
       this.prev()
       // this.play()
-    }.bind(this))
-
+    }.bind(this));
+    var self = this;
+    $('li').on('click', function () {
+      var index = $(this).attr('id');
+      self.go(index)
+    })
     // 让轮播图开始自动播放
     //this.play()
     //鼠标向左滑动 换到下一
-
   }
+
   move() {
     this.lis.each(function (i, el) {
       $(el)
@@ -43,35 +47,36 @@ class Slide {
         .find('img').css('opacity', this.states[i].$opacity)
     }.bind(this));
   }
-  mouseEvent(){
-    const hasTouch = 'ontouchstart' in window;
-    const startEvent = hasTouch ? 'touchstart' : 'mousedown';
-    const moveEvent = hasTouch ? 'touchmove' : 'mousemove';
-    const endEvent = hasTouch ? 'touchend' : 'mouseup';
-    const cancelEvent = hasTouch ? 'touchcancel' : 'mouseup';
-    const sliderEvent={startEvent,moveEvent,endEvent,cancelEvent};
-    this.li=this.ele.find('li');
 
-    this.startX=0;
-    this.endX=0;
-    this.li.on(startEvent,(e)=>{
-      e=e || window.event;
-      console.log(startEvent,e.clientX)
-    }).on(endEvent,(e)=>{
-      e=e || window.event
-      console.log(endEvent,e.clientX)
-    });
-
-//阻止事件冒泡
-//不仅仅要stopPropagation，还要preventDefault
-    function pauseEvent(e){
-      if(e.stopPropagation) e.stopPropagation();
-      if(e.preventDefault) e.preventDefault();
-      e.cancelBubble=true;
-      e.returnValue=false;
-      return false;
+  go(index) {
+    var self= this;
+    index=Number(index);
+    const partSide = parseInt(this.states.length / 2);
+    const middle = partSide + 1;
+    const touchLeft = () => {
+      let subindex = index + partSide + 1;
+      const removeHow=self.states.length-subindex;
+      for(var i=0;i<removeHow;i++){
+        // self.states.unshift( self.states.pop());
+        self.states.push(self.states.shift());
+      }
+      self.move()
+    };
+    const touchRight = () => {
+      let startIndex = Number(index) - partSide - 1;
+      const removeHow=self.states.length-startIndex;
+      for(var i=0;i<removeHow;i++){
+        self.states.unshift( self.states.pop());
+      }
+      self.move()
+    };
+   if(index < middle){
+      touchLeft();
+    }else{
+      touchRight();
     }
   }
+
   next() {
     this.states.unshift(this.states.pop());
     this.move()
@@ -95,4 +100,5 @@ class Slide {
     clearInterval(this.interval)
   }
 }
+
 export default Slide;

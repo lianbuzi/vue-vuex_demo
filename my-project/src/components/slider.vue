@@ -5,7 +5,7 @@
     <section>后一张</section>
     <ul>
       <!--alt + shift : 可以创建一个矩形选择区域-->
-      <li v-for="item in images"><img :src='item'/></li>
+      <li v-for="(item,index) in images" :id="index"><img :src='item'/></li>
     </ul>
   </div>
 </template>
@@ -34,7 +34,6 @@
       slider() {
        let sliders= new Slide('.zy-Slide',{speed: 500});
         sliders.move();
-        sliders.mouseEvent();
       }
     }
   }
